@@ -1,6 +1,7 @@
 { config, lib, ... }:
 
 with lib; {
+  imports = [ ./private/default.nix ];
   time.timeZone = mkDefault "America/Los_Angeles";
   i18n.defaultLocale = mkDefault "en_US.UTF-8";
 

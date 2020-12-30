@@ -149,15 +149,17 @@ handle_image() {
                 convert -- "${FILE_PATH}" -auto-orient "${IMAGE_CACHE_PATH}" && exit 6
             fi
 
+            viu "${FILE_PATH}" && exit 0 || exit 1;;
+
             ## `w3mimgdisplay` will be called for all images (unless overriden
             ## as above), but might fail for unsupported types.
-            exit 7;;
+            # exit 7;;
 
         ## Video
-        # video/*)
-        #     # Thumbnail
-        #     ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
-        #     exit 1;;
+        video/*)
+            # Thumbnail
+            ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
+            exit 1;;
 
         ## PDF
         application/pdf)

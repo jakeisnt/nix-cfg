@@ -7,11 +7,19 @@ in {
   options.modules.shell.ranger = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
-    user.packages = [
-      pkgs.ranger
-      pkgs.w3m # w3m image preview
-      pkgs.poppler_utils # pdf preview
-      pkgs.ffmpegthumbnailer # video thumbnails
+    user.packages = with pkgs; [
+      ranger
+      w3m
+      viu # viu image preview
+      poppler_utils # pdf preview
+      ffmpegthumbnailer # video thumbnails
     ];
+
+    home.configFile = {
+      "ranger" = {
+        source = "${configDir}/ranger";
+        recursive = true;
+      };
+    };
   };
 }

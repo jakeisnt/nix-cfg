@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, options, lib, pkgs, secrets, ... }:
 
 with lib;
 with lib.my;
@@ -16,10 +16,7 @@ let
     '';
   };
 in {
-  options.modules.media.ncmpcpp = {
-    enable = mkBoolOpt false;
-    # mopidy.enable = mkBoolOpt false;
-  };
+  options.modules.media.ncmpcpp = { enable = mkBoolOpt false; };
 
   config = mkIf cfg.enable {
     user.packages = with pkgs; [
@@ -55,7 +52,18 @@ in {
     home.configFile = {
       "ncmpcpp/config".source = "${configDir}/ncmpcpp/config";
       "ncmpcpp/bindings".source = "${configDir}/ncmpcpp/bindings";
-      "mopidy/mopidy.conf".source = "${configDir}/mopidy/mopidy.conf";
+      # "mopidy/mopidy.conf".source = "${configDir}/mopidy/mopidy.conf";
+      "mopidy/mopidy.conf".text = with secrets;
+        concatStringsSep "\n" [
+          (concatMapStringsSep "\n" readFile [ ./config/mopidy/mopidy.conf ])
+          ''
+            username=${SPOTIFY_USERNAME}
+            password=${SPOTIFY_PASSWORD}
+            client_id=${SPOTIFY_CLIENT_ID}
+            client_secret=${SPOTIFY_CLIENT_SECRET}
+            [soundcloud]
+            auth_token=${SOUNDCLOUD_AUTH_TOKEN}\n''
+        ];
     };
   };
 }
