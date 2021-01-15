@@ -5,4 +5,29 @@
     "editor.minimap.enable": false,
     "editor.scrollbar.horizontal": "hidden",
     "editor.scrollbar.vertical": "hidden",
+
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.autoIndent": "full",
+    "editor.quickSuggestions": true,
+    "editor.mouseWheelZoom": true,
+    "editor.semanticHighlighting.enabled": true,
+    "editor.fontLigatures": true,
+    "editor.wordBasedSuggestions": true,
+    "editor.suggest.localityBonus": true,
+    "editor.snippetSuggestions": "bottom",
+    "editor.quickSuggestionsDelay": 0,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true
+    },
+    "editor.rulers": [
+        { "column": 80, "color": "#ffffff10" },
+        { "column": 120, "color": "#6666668e" }
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": true
 }

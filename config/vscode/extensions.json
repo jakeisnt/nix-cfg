@@ -1,0 +1,21 @@
+{
+    "recommendations": [
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "Gruntfuggly.todo-tree",
+        "aaron-bond.better-comments",
+        "esbenp.prettier-vscode",
+        "pkief.material-icon-theme",
+        "DavidAnson.vscode-markdownlint",
+        "npxms.hide-gitignored",
+        "equinusocio.vsc-community-material-theme",
+        "pkief.material-icon-theme",
+        "mads-hartmann.bash-ide-vscode",
+        "rogalmic.bash-debug",
+        "timonwong.shellcheck",
+        "bmalehorn.vscode-fish",
+        "coolbear.systemd-unit-file",
+        "dunstontc.viml"
+    ]
+}
