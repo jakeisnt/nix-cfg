@@ -22,7 +22,6 @@ let
 in {
   options.modules.media.ncmpcpp = {
     enable = mkBoolOpt false;
-    # mopidy.enable = mkBoolOpt false;
   };
 
   config = mkIf cfg.enable {
@@ -40,15 +39,119 @@ in {
       mus = "mpd & ncmpcpp";
     };
 
-    # as a systemd service, mopidy can't properly connect to pulseaudio
-    # so this is on hold until that's figured out.
-    # systemd.services.mopidy = {
+    services.mopidy = {
+      enable = true;
+      extensionPackages = with pkgs; [
+        mopidy-spotify
+        mopidy-youtube
+        mopidy-mpd
+        mopidy-scrobbler
+      ];
+      configuration = ''
+        [core]
+        cache_dir = $XDG_CACHE_DIR/mopidy
+        config_dir = $XDG_CONFIG_DIR/mopidy
+        data_dir = $XDG_DATA_DIR/mopidy
+        max_tracklist_length = 10000
+        restore_state = false
+
+        [logging]
+        verbosity = 0
+        format = %(levelname)-8s %(asctime)s [%(process)d:%(threadName)s] %(name)s
+          %(message)s
+        color = true
+
+        [audio]
+        mixer = software
+        # output = pulsesink server=127.0.0.1
+        output = autoaudiosink
+
+        [proxy]
+        #scheme =
+        #hostname =
+        # port = 6600
+        #username =
+        #password =
+
+        [file]
+        enabled = true
+        media_dirs =
+          $HOME/music
+        excluded_file_extensions =
+          .directory
+          .html
+          .jpeg
+          .jpg
+          .log
+          .nfo
+          .pdf
+          .png
+          .txt
+          .zip
+          .git
+          .org
+        show_dotfiles = false
+        follow_symlinks = false
+
+        [http]
+        enabled = true
+        hostname = 127.0.0.1
+        port = 6680
+
+        [m3u]
+        enabled = true
+
+        [softwaremixer]
+        # enabled = false
+
+        [stream]
+        enabled = true
+        protocols =
+          http
+          https
+          mms
+          rtmp
+          rtmps
+          rtsp
+        #metadata_blacklist =
+        #timeout = 5000
+
+        [youtube]
+        enabled = true
+        autoplay_enabled = true
+
+        [mpd]
+        enabled = true
+
+        [spotify]
+        allow_network = true
+        search_album_count = 20
+        search_artist_count = 10
+        search_track_count = 50
+        enabled = true
+        allow_playlists = true
+        allow_cache = true
+
+        username = ${secrets.spotify.username}
+        password = ${secrets.spotify.password}
+        client_id = ${secrets.spotify.clientID}
+        client_secret = ${secrets.spotify.clientSecret}
+
+        [scrobbler]
+        username = ${secrets.lastFM.username}
+        password = ${secrets.lastFM.password}
+        '';
+    };
+
+    # systemd.user.services.mopidy = {
+    #   enable = true;
     #   wantedBy = [ "multi-user.target" ];
-    #   after = [ "network.target" "sound.target" "network-online.target" ];
+    #   wants = [ "network.target" "sound.target" "network-online.target" ];
     #   description = "mopidy music player daemon";
     #   serviceConfig = {
     #     ExecStart = "${mopidyEnv}/bin/mopidy";
-    #     User = ${secrets.username};
+    #     Restart = "always";
+    #     RestartSec = 10;
     #   };
     # };
 
